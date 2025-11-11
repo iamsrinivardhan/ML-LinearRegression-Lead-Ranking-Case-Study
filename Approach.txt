@@ -1,0 +1,47 @@
+Approach
+Data Importing
+-> Started importing the memory optimized dataframe. This was achieved in two steps
+	First 100 rows of the dataframe were imported
+	All the columns in the dataframe were downcasted and their optimized datatypes were found
+	Now the complete data was imported with the downcasted datatypes. 
+	More than 50% memory optimization was achieved
+	Shape of the data 9240 x 36
+
+Data Processing
+-> Missing value treatment
+	The data had columns with missing values and there were columns with value 'Select'
+	In this business case, the value 'Select' is equivalent to null value. Hence it were imputed with nan
+	Columns having missing value % greater than 40 were dropped
+	Rows having cumulative missing value count greater than 5 were dropped
+	Rows of the columns having missing % less than 2 were dropped
+	All columns having skewed data % greater than 95 % were dropped
+	The columns having 25 % missing value, were imputed with value 'unknown' as replacing with any other value will be equivalent of altering the raw data and significantly affect the result
+	Shape of data after missing value treatment 8749 x 13
+	
+Visualization Data
+-> After visualizing data, following observations were made
+(Add as discussed, same has to be added in python notebook file)
+
+Data Preparation
+-> Outlier Treatment
+	There are two columns 'Total Visits' and 'Time spent per visit' which had outlier
+	In order not to lose lot of data, high value capping was done at 97%
+ 
+	Dummy variable were created and resultant dataframe shape was 8749 x 54
+	Split the data as 70% train and 30% test data
+	Scaling on the numerical columns was achieved by performing Standardization using StandardScaler
+	20 features were selected using RFE
+	Using GLM model were built and validated using p-value and VIF
+	Columns were dropped until p-value and VIF are under the limit of 0.05 and 5 respectively.
+	Model was first validated using a cut-off of 0.5 probability
+	Next the cut-off was evaluated for max sensitivity, specificity and accuracy. Priority was given to sensitivity based on the business case.
+	Confusion matrix was used to evaluate the model
+	Sensitivity was 0.84 in train data, 0.85 in test data.
+	
+-> Final Result
+
+	The probability was appended against each row and merged with the original dataframe
+	Using this Z score, sales team can prioritize the lead.
+
+	
+	
